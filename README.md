@@ -6,7 +6,7 @@ Sensor communicates over I2C and is made by AMS. Product information can be foun
  - Supply voltage 2.7v - 3.6v
  - Built in IR blocking filter
 
-![](docs/images/tcs34726_block_diagram)
+![](docs/images/tcs34726_block_diagram.png)
 
 ## Testing
 Tested using
