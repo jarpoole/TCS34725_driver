@@ -123,9 +123,9 @@ typedef enum {
 } tcs34725_err_t;
 
 // Define platform specific function pointers (return 0 for success, return non-zero for error)
-typedef int8_t (*tcs34725_read_reg_fptr_t)(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint32_t len);
-typedef int8_t (*tcs34725_write_reg_fptr_t)(uint8_t dev_addr, uint8_t reg_addr, const uint8_t *reg_data, uint32_t len);
-typedef int8_t (*tcs34725_write_byte_fptr_t)(uint8_t dev_addr, uint8_t single_byte);
+typedef int8_t (*tcs34725_read_reg_fptr_t)(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void* user_ptr);
+typedef int8_t (*tcs34725_write_reg_fptr_t)(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len, void* user_ptr);
+typedef int8_t (*tcs34725_write_byte_fptr_t)(uint8_t single_byte, void* user_ptr);
 typedef void   (*tcs34725_delay_ms_fptr_t)(uint32_t period);
 
 // Color type
@@ -151,12 +151,12 @@ typedef struct {
 
 // Device configuration
 typedef struct {
-    uint8_t device_addr;                    // I2C device bus address
-    tcs34725_read_reg_fptr_t read_reg;      // Read register function pointer
-    tcs34725_write_reg_fptr_t write_reg;    // Write register function pointer
+    void*                      user_ptr;    // User pointer for arbitrary use
+    tcs34725_read_reg_fptr_t   read_reg;    // Read register function pointer
+    tcs34725_write_reg_fptr_t  write_reg;   // Write register function pointer
     tcs34725_write_byte_fptr_t write_byte;  // Write a single byte function pointer
-    tcs34725_delay_ms_fptr_t delay_ms;      // Delay function pointer
-    tcs34725_settings_t settings;           // Sensor settings
+    tcs34725_delay_ms_fptr_t   delay_ms;    // Delay function pointer
+    tcs34725_settings_t        settings;    // Sensor settings
 } tcs34725_config_t;
 
 

@@ -13,8 +13,7 @@ static tcs34725_err_t read16(uint8_t, uint16_t*, tcs34725_config_t*);
 static tcs34725_err_t write8(uint8_t reg, uint32_t value, tcs34725_config_t* config) {
     tcs34725_err_t err;
     uint8_t data = (uint8_t) value;
-    
-    if( config->write_reg(config->device_addr, reg, &data, 1) == 0){
+    if( config->write_reg(reg, &data, 1, config->user_ptr) == 0){
         err = TCS34725_OK;
     }else{
         err = TCS34725_ERR_WRITE;
@@ -25,7 +24,7 @@ static tcs34725_err_t write8(uint8_t reg, uint32_t value, tcs34725_config_t* con
 
 static tcs34725_err_t read8(uint8_t reg, uint8_t* data, tcs34725_config_t* config) {
     tcs34725_err_t err;
-    if( config->read_reg(config->device_addr, reg, data, sizeof(uint8_t)) == 0 ){
+    if( config->read_reg(reg, data, sizeof(uint8_t), config->user_ptr) == 0 ){
         err = TCS34725_OK;
     }else{
         err = TCS34725_ERR_READ;
@@ -36,13 +35,12 @@ static tcs34725_err_t read8(uint8_t reg, uint8_t* data, tcs34725_config_t* confi
 
 static tcs34725_err_t read16(uint8_t reg, uint16_t* data, tcs34725_config_t* config) {
     tcs34725_err_t err;
-    if( config->read_reg(config->device_addr, reg, (uint8_t*) data, sizeof(uint16_t)) == 0 ){
+    if( config->read_reg(reg, (uint8_t*) data, sizeof(uint16_t), config->user_ptr) == 0 ){
         err = TCS34725_OK;
     }else{
         err = TCS34725_ERR_READ;
     }
     return err;
-
 }
 
 
@@ -334,7 +332,7 @@ tcs34725_err_t tcs34725_set_interrupt(bool interrupt, tcs34725_config_t* config)
 
 tcs34725_err_t tcs34725_clear_interrupt(tcs34725_config_t* config) {
     tcs34725_err_t err;
-    if( config->write_byte(config->device_addr, TCS34725_COMMAND_FORMAT(TCS34725_COMMAND_BIT, TCS34725_SF_MODE, TCS34725_SF_INT_CLEAR)) == 0){
+    if( config->write_byte(TCS34725_COMMAND_FORMAT(TCS34725_COMMAND_BIT, TCS34725_SF_MODE, TCS34725_SF_INT_CLEAR), config->user_ptr) == 0){
         err = TCS34725_OK;
     }else{
         err = TCS34725_ERR_WRITE;
